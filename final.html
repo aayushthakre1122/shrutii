@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgive Me or Punish Me? ❤️</title>
+    <link rel="website icon" type="png" href="pic6.jpg">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffb6c1, #ffd8be, #e6e6fa);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .heart-frame {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            filter: drop-shadow(0 5px 15px rgba(255, 105, 180, 0.4));
+        }
+
+        .heart-shape {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff6b81' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transform: scale(1.8);
+        }
+
+        .heart-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heart-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: #ff6b81;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-forgive {
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            color: #fff;
+        }
+
+        .btn-forgive:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(255, 154, 158, 0.5);
+        }
+
+        .btn-forgive::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn-forgive:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .btn-punish {
+            background: linear-gradient(45deg, #a18cd1, #fbc2eb);
+            color: #fff;
+        }
+
+        .btn-punish:hover {
+            animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .footer-message {
+            margin-top: 40px;
+            color: #ff6b81;
+            font-size: 1.2rem;
+            font-style: italic;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Forgive Screen */
+        #forgive-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .typing-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b81;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(255, 107, 129, 0.3);
+            min-height: 60px;
+        }
+
+        .queen-crown {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'%3E%3Cpath fill='%23ffd700' d='M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.2 7.7-.6l74.9 136.2c1.4 2.6 4.1 4.2 7.1 4.2h324.6c3 0 5.7-1.6 7.1-4.2l74.9-136.2c2.5.4 5.1.6 7.7.6 26.5 0 48-21.5 48-48s-21.5-48-48-48z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.7)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)); }
+            100% { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.7)); }
+        }
+
+        .queen-title {
+            font-size: 1.5rem;
+            color: #ff6b81;
+            margin-bottom: 30px;
+        }
+
+        .teddy-hug {
+            width: 200px;
+            height: 200px;
+            background-image: url("/api/placeholder/200/200");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 20px auto;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .final-message {
+            font-size: 1.3rem;
+            color: #333;
+            margin: 30px 0;
+            line-height: 1.6;
+            max-width: 80%;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="floating-text" id="floating-text"></div>
+
+    <!-- Main container -->
+    <div class="container">
+        <div class="heart-frame">
+            <div class="heart-shape"></div>
+            <div class="heart-content">
+                <img src="./pic3.jpg" alt="Sad Teddy Bear">
+            </div>
+        </div>
+        
+        <h1>Now Shrutii Jii, Choose any one of these, I hope you will for sure select the Correct one...</h1>
+        
+        <div class="buttons">
+            <button class="btn btn-forgive" id="forgiveBtn">Forgive Me</button>
+            <button class="btn btn-punish" id="punishBtn">Punish Me</button>
+        </div>
+        
+        <p class="footer-message">No matter what, I will always be yours, forever and ever. My love for you is infinite, Pookie. ❤️</p>
+    </div>
+
+    <!-- Forgive Screen -->
+    <div id="forgive-screen">
+        <div class="typing-text" id="forgive-text"></div>
+        <div class="queen-crown"></div>
+        <div class="queen-title">You are My queen</div>
+        <div class="teddy-hug"></div>
+        <p class="final-message">You are the queen of my heart forever. Thank you for forgiving your silly boyfriend! I promise to always make you happy! 😍💕</p>
+        <!-- <button class="btn-hug" id="hugBtn">Hug Me</button> -->
+    </div>
+
+    
+
+    <!-- Heart Explosion -->
+    <div class="heart-explosion" id="heartExplosion"></div>
+
+    <script>
+        
+
+        // Forgive Button
+        document.getElementById('forgiveBtn').addEventListener('click', () => {
+            const forgiveScreen = document.getElementById('forgive-screen');
+            forgiveScreen.style.display = 'flex';
+            
+            // Create confetti
+            for (let i = 0; i < 100; i++) {
+                createConfetti();
+            }
+            
+            // Typing animation
+            const text = "I Love You, Shruti!! ♥";
+            const textElement = document.getElementById('forgive-text');
+            let index = 0;
+            
+            function typeText() {
+                if (index < text.length) {
+                    textElement.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(typeText, 100);
+                }
+            }
+            
+            setTimeout(typeText, 1000);
+        });
+
+        
+
+        // Create confetti function
+        function createConfetti() {
+            const colors = ['#ff6b81', '#ff9a9e', '#fad0c4', '#a18cd1', '#fbc2eb'];
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            
+            const size = Math.random() * 10 + 5;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            confetti.style.backgroundColor = color;
+            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+            confetti.style.left = `${Math.random() * 100}%`;
+            confetti.style.top = '-20px';
+            
+            confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            document.getElementById('forgive-screen').appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+
+        
+        
+
+        // Fall animation for confetti
+        document.styleSheets[0].insertRule(`
+            @keyframes fall {
+                0% {
+                    top: -20px;
+                    transform: translateX(0) rotate(0deg);
+                }
+                100% {
+                    top: 100vh;
+                    transform: translateX(${Math.random() * 200 - 100}px) rotate(${Math.random() * 360}deg);
+                }
+            }
+        `, document.styleSheets[0].cssRules.length);
+
+    
+        // Make buttons non-draggable
+        document.querySelectorAll('button').forEach(button => {
+            button.setAttribute('draggable', 'false');
+        });
+
+        // Add hover effects for buttons
+        document.querySelectorAll('.btn, .btn-hug, .btn-bail, .btn-free').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = button.classList.contains('btn-bail') ? '' : 'scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = '';
+            });
+        });
+
+        // Additional animation for floating hearts
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = '100%';
+                heart.style.animation = 'floatHeart 10s linear infinite';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 10000);
+            }
+        }, 1000);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            // Adjust positions of any absolute positioned elements
+            const bailBtn = document.getElementById('bailBtn');
+            if (bailBtn.style.position === 'absolute') {
+                const newX = Math.random() * (window.innerWidth - bailBtn.offsetWidth - 100);
+                const newY = Math.random() * (window.innerHeight - bailBtn.offsetHeight - 100);
+                
+                bailBtn.style.left = `${newX}px`;
+                bailBtn.style.top = `${newY}px`;
+            }
+        });
+
+        // Add some accessibility features
+        document.querySelectorAll('button').forEach(button => {
+            button.setAttribute('aria-label', button.textContent);
+            button.setAttribute('role', 'button');
+        });
+
+        // Add preload for images
+        window.addEventListener('load', () => {
+            const images = [
+                "pic6.jpg",
+                "pic6.jpg",
+                "pic6.jpg",
+                "pic6.jpg"
+            ];
+            
+            images.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        });
+
+        // Add mobile touch event support
+        document.getElementById('bailBtn').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const btn = e.target;
+            const rect = btn.getBoundingClientRect();
+            const newX = Math.random() * (window.innerWidth - rect.width - 50);
+            const newY = Math.random() * (window.innerHeight - rect.height - 50);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = `${newX}px`;
+            btn.style.top = `${newY}px`;
+        });
+
+        // Allow escape key to exit full screens
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('forgive-screen').style.display = 'none';
+                document.getElementById('punish-screen').style.display = 'none';
+            }
+        });
+
+        
+        
+        
+        // Handle visibility change to pause/resume animations
+        document.addEventListener('visibilitychange', () => {
+            const animations = document.querySelectorAll('.floating-heart, .confetti, .heart-explosion-heart');
+            if (document.hidden) {
+                animations.forEach(el => {
+                    el.style.animationPlayState = 'paused';
+                });
+            } else {
+                animations.forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
